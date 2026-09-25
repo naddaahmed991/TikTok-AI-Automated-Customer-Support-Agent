@@ -36,3 +36,4 @@ Tunneling / Webhook: ngrok
                                            │                     │
                                            ▼                     ▼
                                   [Telegram Alert]      [TikTok Send Reply]
+<img width="1280" height="680" alt="image" src="https://github.com/user-attachments/assets/91e6bbfe-e36d-4fe1-b66f-8fb65af91c64" />
