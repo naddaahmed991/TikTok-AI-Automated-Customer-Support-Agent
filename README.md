@@ -1,3 +1,38 @@
 # TikTok-AI-Automated-Customer-Support-Agent
 An end-to-end automated workflow built with **n8n**, integrating **TikTok API**, **Groq LLM**, and **Telegram** to provide intelligent, real-time responses to incoming TikTok messages and comments with human-in-the-loop fallback.
-🌟 OverviewThis workflow automates the handling of TikTok customer interactions by utilizing an AI Agent powered by Groq Chat Model. It categorizes user queries, formulates appropriate responses, and determines whether an inquiry can be resolved automatically or requires human intervention via Telegram.🚀 Key FeaturesOAuth 2.0 Authentication: Handles TikTok OAuth callback logic to securely request and retrieve Access Tokens.   Webhook Event Listener: Captures real-time incoming events (Messages/Comments) from TikTok.   Data Normalization & Validation: Formats payload structures and filters out invalid or empty inputs.   AI-Powered Decision Making: Uses Groq LLM with custom system prompts to evaluate message sentiment and intent.   Human-in-the-Loop (HITL): Routes complex queries or edge cases to a Telegram Alert channel for human review.   Automated TikTok Response: Prepares and sends responses back to TikTok via REST HTTP Requests.   🛠️ Tech Stack & ToolsWorkflow Automation: n8n   AI / LLM Model: Groq API (LLaMA-based model)   Platform Integrations: TikTok API (Webhooks, Messaging, OAuth 2.0), Telegram Bot API   Tunneling / Webhook Local Hosting: ngrok🔄 Workflow ArchitectureOAuth Pipeline:TikTok OAuth Callback $\rightarrow$ HTTP Request (Get Access Token) $\rightarrow$ TikTok OAuth Result.   Core AI Processing Pipeline:TikTok Incoming Webhook: Receives payload.   Normalize TikTok Event: Standardizes json structure.   Message/Comment Exists?: Router node for payload verification.   TikTok AI Agent + Groq Chat Model: Processes text and determines action.   Parse AI Decision: Extracts decisions and structured output.   Routing & Execution:If Human Review Needed: Sends an instant alert to Telegram $\rightarrow$ Triggers Respond - Human Review.   If Auto-Reply Approved: Runs Prepare TikTok Reply $\rightarrow$ Executes HTTP Request (TikTok Access Token2) $\rightarrow$ Triggers Respond - Reply Ready.   💻 How to Import to n8nCopy the JSON export of this workflow.In n8n, navigate to Workflows > Import from File / Text.Configure your Credentials:TikTok Client ID & SecretGroq API KeyTelegram Bot Credentials
+🌟 Overview
+This project automates customer support for TikTok by instantly processing incoming direct messages and comments. Powered by Groq LLM, the AI Agent evaluates the context of each message, formulates appropriate replies, and seamlessly routes complex inquiries to a Telegram channel for human review.
+
+🚀 Key Features
+🔐 OAuth 2.0 Authentication: Handles TikTok OAuth callback logic to securely request and retrieve Access Tokens.
+
+📬 Webhook Event Listener: Captures real-time incoming events (Messages/Comments) from TikTok.
+
+🧹 Data Normalization: Cleans and standardizes JSON payloads for reliable processing.
+
+🧠 AI-Powered Decision Making: Evaluates user intent and sentiment using Groq Chat Model.
+
+👨‍💻 Human-in-the-Loop (HITL): Automatically flags edge cases and routes them to a Telegram channel for manual intervention.
+
+📤 Automated TikTok Response: Prepares and dispatches contextual replies back to TikTok via REST HTTP Requests.
+
+🛠️ Tech Stack
+Workflow Engine: n8n
+
+AI Model: Groq API (LLaMA-3)
+
+Integrations: TikTok API (Webhooks, Direct Messages, OAuth 2.0), Telegram Bot API
+
+Tunneling / Webhook: ngrok 
+🔄 Workflow Architecture
+[TikTok Incoming Webhook]
+           │
+           ▼
+[Normalize Event] ──► [Message Check] ──► [TikTok AI Agent (Groq)]
+                                                      │
+                                           ┌──────────┴──────────┐
+                                           ▼                     ▼
+                                  (Needs Human Review)     (Auto-Reply)
+                                           │                     │
+                                           ▼                     ▼
+                                  [Telegram Alert]      [TikTok Send Reply]
